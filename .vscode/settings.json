@@ -1,0 +1,10 @@
+{
+	"files.associations": {
+		"*.tcc": "cpp",
+		"mutex": "cpp",
+		"stop_token": "cpp",
+		"thread": "cpp",
+		"variant": "cpp",
+		"format": "cpp"
+	}
+}
