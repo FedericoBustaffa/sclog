@@ -20,4 +20,21 @@ std::string level_to_string(level level)
 	}
 }
 
+std::string level_color(level level)
+{
+	switch (level)
+	{
+	case level::debug:
+		return CYAN;
+	case level::info:
+		return GREEN;
+	case level::warning:
+		return YELLOW;
+	case level::error:
+		return RED;
+	default:
+		return "UNKNOWN";
+	}
+}
+
 } // namespace sclog

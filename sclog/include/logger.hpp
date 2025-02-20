@@ -1,9 +1,11 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
+#include <iostream>
 #include <string>
 #include <thread>
 #include <vector>
+#include <fmt/core.h>
 
 #include "level.hpp"
 #include "handler.hpp"
@@ -27,15 +29,36 @@ public:
 	void add_handler(const char* filename, level level = level::warning);
 
 	// --- Logging functions ---
-	void log(const std::string& message, level level);
+	template <typename... Args>
+	void log(level level, const std::string& format, Args... args)
+	{
+		std::string name = level_to_string(level);
+		m_messages.push({fmt::format("[{}]: " + format, name, args...), level});
+	}
 
-	void debug(const std::string& message);
+	template <typename... Args>
+	void debug(const std::string& format, Args... args)
+	{
+		log(level::debug, format, args...);
+	}
 
-	void info(const std::string& message);
+	template <typename... Args>
+	void info(const std::string& format, Args... args)
+	{
+		log(level::info, format, args...);
+	}
 
-	void warning(const std::string& message);
+	template <typename... Args>
+	void warning(const std::string& format, Args... args)
+	{
+		log(level::warning, format, args...);
+	}
 
-	void error(const std::string& message);
+	template <typename... Args>
+	void error(const std::string& format, Args... args)
+	{
+		log(level::error, format, args...);
+	}
 
 private:
 	level m_level;

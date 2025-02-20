@@ -1,4 +1,4 @@
-#include "sclog.hpp"
+#include "logger.hpp"
 
 #include <iostream>
 #include <fmt/core.h>
@@ -10,21 +10,17 @@ static void handle(level& m_level, queue& messages, std::vector<handler>& handle
 {
 	while (true)
 	{
-		std::pair<std::string, level> message = messages.pop();
-		if (message.first == "")
+		queue::message msg = messages.pop();
+		if (msg.msg == "")
 			break;
 
-		std::string msg = message.first;
-		level level = message.second;
-
-		std::string formatted_string = fmt::format("[{}] {}\n", level_to_string(level), msg);
-		if (level >= m_level)
-			std::cout << formatted_string;
+		if (msg.lvl >= m_level)
+			std::cout << level_color(msg.lvl) + msg.msg + RESET;
 
 		for (handler& h : handlers)
 		{
-			if ((level >= m_level) & (level >= h.get_level()))
-				h.write(formatted_string);
+			if ((msg.lvl >= m_level) & (msg.lvl >= h.get_level()))
+				h.write(msg.msg);
 		}
 	}
 }
@@ -37,7 +33,7 @@ logger::logger(level level)
 
 logger::~logger()
 {
-	m_messages.push("", level::info);
+	m_messages.push({"", level::info});
 	m_logger.join();
 }
 
@@ -47,15 +43,5 @@ void logger::add_handler(const char* filename, level level)
 {
 	m_handlers.emplace_back(filename, level);
 }
-
-void logger::log(const std::string& message, level level) { m_messages.push(message, level); }
-
-void logger::debug(const std::string& message) { log(message, level::debug); }
-
-void logger::info(const std::string& message) { log(message, level::info); }
-
-void logger::warning(const std::string& message) { log(message, level::warning); }
-
-void logger::error(const std::string& message) { log(message, level::error); }
 
 } // namespace sclog

@@ -16,6 +16,14 @@ enum level
 
 std::string level_to_string(level level);
 
+#define RESET "\033[0m"
+#define CYAN "\033[36m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define RED "\033[31m"
+
+std::string level_color(level level);
+
 } // namespace sclog
 
 #endif

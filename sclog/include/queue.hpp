@@ -16,14 +16,19 @@ class queue
 public:
 	queue();
 	~queue();
+	struct message
+	{
+		std::string msg;
+		level lvl;
+	};
 
-	void push(const std::string& message, level level);
-	std::pair<std::string, level> pop();
+	void push(const message& msg);
+	queue::message pop();
 
 private:
 	std::mutex m_mutex;
 	std::condition_variable m_condition;
-	std::queue<std::pair<std::string, level>> m_buffer;
+	std::queue<message> m_buffer;
 };
 
 } // namespace sclog
