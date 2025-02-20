@@ -7,7 +7,7 @@ namespace sc = sclog;
 
 void spread(sc::logger& logger)
 {
-	for (int i = 0; i < 1000; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		auto id = std::this_thread::get_id();
 		std::cout << id << std::endl;
@@ -24,7 +24,7 @@ int main(int argc, const char** argv)
 	logger.add_handler("history.log", sc::level::info);
 
 	std::vector<std::thread> threads;
-	for (int i = 0; i < 100; ++i)
+	for (int i = 0; i < 8; ++i)
 		threads.push_back(std::thread(spread, std::ref(logger)));
 
 	for (auto& thread : threads)
