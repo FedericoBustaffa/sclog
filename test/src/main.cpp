@@ -9,15 +9,15 @@ namespace sc = sclog;
 
 using namespace std::chrono_literals;
 
-void test(sc::logger& logger)
+void test(int id, sc::logger* logger)
 {
 	for (int i = 0; i < 10; ++i)
 	{
 		std::this_thread::sleep_for(200ms);
-		logger.debug("This is the {} debug message\n", i + 1);
-		logger.info("This is the {} info message\n", i + 1);
-		logger.warning("This is the {} warning message\n", i + 1);
-		logger.error("This is the {} error message\n", i + 1);
+		logger->debug("This is the {} debug message from thread {}\n", i + 1, id);
+		logger->info("This is the {} info message from thread {}\n", i + 1, id);
+		logger->warning("This is the {} warning message from thread {}\n", i + 1, id);
+		logger->error("This is the {} error message from thread {}\n", i + 1, id);
 	}
 }
 
@@ -28,7 +28,7 @@ int main(int argc, const char** argv)
 
 	std::vector<std::thread> threads;
 	for (int i = 0; i < 8; ++i)
-		threads.push_back(std::thread(test, std::ref(logger)));
+		threads.push_back(std::thread(test, i, &logger));
 
 	for (auto& thread : threads)
 		thread.join();
