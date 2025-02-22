@@ -1,7 +1,7 @@
 #ifndef HANDLER_HPP
 #define HANDLER_HPP
 
-#include <fstream>
+#include <iostream>
 
 #include "level.hpp"
 
@@ -11,7 +11,8 @@ namespace sclog
 class handler
 {
 public:
-	handler(const char* filename, level level);
+	handler(const char* name, level level);
+	~handler();
 
 	inline const level& get_level() const { return m_level; }
 
@@ -19,7 +20,7 @@ public:
 
 private:
 	level m_level;
-	std::ofstream m_stream;
+	std::ostream* m_stream;
 };
 
 } // namespace sclog

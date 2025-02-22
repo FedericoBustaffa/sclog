@@ -14,9 +14,6 @@ static void handle(level* m_level, queue* messages, std::vector<handler>* handle
 		if (msg.msg == "")
 			break;
 
-		if (msg.lvl >= *m_level)
-			std::cout << level_color(msg.lvl) + msg.msg + RESET;
-
 		for (handler& h : *handlers)
 		{
 			if ((msg.lvl >= *m_level) & (msg.lvl >= h.get_level()))
@@ -27,6 +24,7 @@ static void handle(level* m_level, queue* messages, std::vector<handler>* handle
 
 logger::logger(level level) : m_level(level), m_logger(handle, &m_level, &m_messages, &m_handlers)
 {
+	m_handlers.emplace_back("stdout", level::info);
 }
 
 logger::~logger()
