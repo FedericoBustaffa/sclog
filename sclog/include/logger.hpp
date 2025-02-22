@@ -26,14 +26,16 @@ public:
 
 	inline const level& get_level() const { return m_level; }
 
-	void add_handler(const char* filename, level level = level::warning);
+	void add_handler(std::ostream* stream, level level = level::warning);
+
+	std::vector<handler>& get_handlers();
 
 	// --- Logging functions ---
 	template <typename... Args>
 	void log(level level, const std::string& format, Args... args)
 	{
 		std::string name = level_to_string(level);
-		m_messages.push({fmt::format("[{}]: " + format, name, args...), level});
+		m_messages.push({fmt::format(format, name, args...), level});
 	}
 
 	template <typename... Args>

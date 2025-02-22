@@ -2,6 +2,7 @@
 #include <chrono>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 #include "sclog.hpp"
 
@@ -24,7 +25,8 @@ void test(int id, sc::logger* logger)
 int main(int argc, const char** argv)
 {
 	sc::logger logger(sc::level::debug);
-	logger.add_handler("log.log", sc::level::debug);
+	std::ofstream file("log.log");
+	logger.add_handler(&file, sc::level::debug);
 
 	std::vector<std::thread> threads;
 	for (int i = 0; i < 8; ++i)

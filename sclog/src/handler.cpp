@@ -7,22 +7,13 @@
 namespace sclog
 {
 
-handler::handler(const char* name, level level) : m_level(level)
-{
-	if (std::strcmp(name, "stdout") == 0)
-		m_stream = &std::cout;
-	else if (std::strcmp(name, "stderr") == 0)
-		m_stream = &std::cerr;
-	else
-		m_stream = new std::ofstream(name);
-};
+handler::handler(std::ostream* stream, level level)
+	: m_stream(stream), m_level(level), m_formatter() {};
 
-void handler::write(const std::string& message) { *m_stream << message; }
+void handler::set_formatter(const formatter& formatter) { m_formatter = formatter; }
 
-handler::~handler()
-{
-	if (m_stream != &std::cout && m_stream != &std::cerr)
-		delete m_stream;
-}
+void handler::write(std::string& message) { *m_stream << m_formatter.format(message); }
+
+handler::~handler() {}
 
 } // namespace sclog

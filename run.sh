@@ -10,11 +10,15 @@ fi
 echo "Build project ..."
 cd ./build/
 cmake .. -DCMAKE_BUILD_TYPE=$bt
-make
-cd ..
 
-if [ $bt == "Debug" ]; then
-	valgrind ./build/test/test --leak-check=full --track-origins=yes
+if make; then
+	cd ..
+	if [ $bt == "Debug" ]; then
+		valgrind ./build/test/test --leak-check=full --track-origins=yes
+	else
+		./build/test/test
+	fi
 else
-	./build/test/test
+	echo "compilation failed"
+	exit 1
 fi

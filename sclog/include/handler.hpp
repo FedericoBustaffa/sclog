@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "level.hpp"
+#include "formatter.hpp"
 
 namespace sclog
 {
@@ -11,16 +12,20 @@ namespace sclog
 class handler
 {
 public:
-	handler(const char* name, level level);
+	handler(std::ostream* stream, level level);
 	~handler();
 
+	inline void set_level(level level) { m_level = level; }
 	inline const level& get_level() const { return m_level; }
 
-	void write(const std::string& message);
+	void set_formatter(const formatter& formatter);
+
+	void write(std::string& message);
 
 private:
-	level m_level;
 	std::ostream* m_stream;
+	level m_level;
+	formatter m_formatter;
 };
 
 } // namespace sclog

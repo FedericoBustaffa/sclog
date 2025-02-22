@@ -18,7 +18,7 @@ public:
 	~queue();
 	struct message
 	{
-		std::string msg;
+		std::string content;
 		level lvl;
 	};
 
