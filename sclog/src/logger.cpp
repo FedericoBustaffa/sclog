@@ -18,14 +18,16 @@ static void handle(level* m_level, queue* messages, std::vector<handler>* handle
 		for (handler& h : *handlers)
 		{
 			if ((msg.lvl >= *m_level) & (msg.lvl >= h.get_level()))
-				h.write(msg.content);
+				h.write(msg.content, msg.lvl);
 		}
 	}
 }
 
 logger::logger(level level) : m_level(level), m_logger(handle, &m_level, &m_messages, &m_handlers)
 {
-	handler stdout_handler(&std::cout, level::info);
+	handler stdout_handler(&std::cout, level);
+	formatter formatter("[{}] - {}[{}]: {}{}");
+	stdout_handler.set_formatter(formatter);
 	m_handlers.push_back(stdout_handler);
 }
 

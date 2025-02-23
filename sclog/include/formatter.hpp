@@ -2,7 +2,8 @@
 #define FORMATTER_HPP
 
 #include <fmt/core.h>
-#include <fmt/color.h>
+
+#include "level.hpp"
 
 namespace sclog
 {
@@ -11,9 +12,9 @@ class formatter
 {
 public:
 	formatter(const std::string& format = "");
-	virtual ~formatter();
+	~formatter();
 
-	virtual std::string format(const std::string& content);
+	std::string format(const std::string& content, level level);
 
 private:
 	std::string m_format;

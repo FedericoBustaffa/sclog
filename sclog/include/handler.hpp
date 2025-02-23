@@ -20,7 +20,7 @@ public:
 
 	void set_formatter(const formatter& formatter);
 
-	void write(std::string& message);
+	void write(std::string& message, level level);
 
 private:
 	std::ostream* m_stream;

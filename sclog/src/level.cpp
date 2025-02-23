@@ -1,5 +1,7 @@
 #include "level.hpp"
 
+#include <fmt/color.h>
+
 namespace sclog
 {
 
@@ -7,6 +9,8 @@ std::string level_to_string(level level)
 {
 	switch (level)
 	{
+	case level::trace:
+		return "TRACE";
 	case level::debug:
 		return "DEBUG";
 	case level::info:
@@ -24,6 +28,8 @@ std::string level_color(level level)
 {
 	switch (level)
 	{
+	case level::trace:
+		return RESET;
 	case level::debug:
 		return CYAN;
 	case level::info:

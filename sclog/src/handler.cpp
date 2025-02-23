@@ -12,7 +12,10 @@ handler::handler(std::ostream* stream, level level)
 
 void handler::set_formatter(const formatter& formatter) { m_formatter = formatter; }
 
-void handler::write(std::string& message) { *m_stream << m_formatter.format(message); }
+void handler::write(std::string& message, level level)
+{
+	*m_stream << m_formatter.format(message, level);
+}
 
 handler::~handler() {}
 

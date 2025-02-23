@@ -6,12 +6,13 @@
 namespace sclog
 {
 
-enum level
+enum class level
 {
-	debug = 10,
-	info = 20,
-	warning = 30,
-	error = 40
+	trace = 10,
+	debug = 20,
+	info = 30,
+	warning = 40,
+	error = 50
 };
 
 std::string level_to_string(level level);

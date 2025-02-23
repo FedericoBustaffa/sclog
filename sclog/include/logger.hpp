@@ -32,34 +32,39 @@ public:
 
 	// --- Logging functions ---
 	template <typename... Args>
-	void log(level level, const std::string& format, Args... args)
+	void log(level level, const std::string& message, Args... args)
 	{
-		std::string name = level_to_string(level);
-		m_messages.push({fmt::format(format, name, args...), level});
+		m_messages.push({fmt::format(message, args...), level});
 	}
 
 	template <typename... Args>
-	void debug(const std::string& format, Args... args)
+	void trace(const std::string& message, Args... args)
 	{
-		log(level::debug, format, args...);
+		log(level::trace, message, args...);
 	}
 
 	template <typename... Args>
-	void info(const std::string& format, Args... args)
+	void debug(const std::string& message, Args... args)
 	{
-		log(level::info, format, args...);
+		log(level::debug, message, args...);
 	}
 
 	template <typename... Args>
-	void warning(const std::string& format, Args... args)
+	void info(const std::string& message, Args... args)
 	{
-		log(level::warning, format, args...);
+		log(level::info, message, args...);
 	}
 
 	template <typename... Args>
-	void error(const std::string& format, Args... args)
+	void warning(const std::string& message, Args... args)
 	{
-		log(level::error, format, args...);
+		log(level::warning, message, args...);
+	}
+
+	template <typename... Args>
+	void error(const std::string& message, Args... args)
+	{
+		log(level::error, message, args...);
 	}
 
 private:
