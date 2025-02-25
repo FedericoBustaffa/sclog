@@ -13,8 +13,8 @@ cmake .. -DCMAKE_BUILD_TYPE=$bt
 
 if make; then
 	cd ..
-	if [ $bt == "Debug" ]; then
-		valgrind ./build/test/test --leak-check=full --track-origins=yes
+	if [[ "$bt" == "Debug" ]]; then
+		valgrind -s ./build/test/test
 	else
 		./build/test/test
 	fi
