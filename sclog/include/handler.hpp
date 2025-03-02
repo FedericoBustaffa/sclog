@@ -12,7 +12,7 @@ namespace sclog
 class handler
 {
 public:
-	handler(std::ostream* stream, level level);
+	handler(std::ostream* stream, level level, const formatter& formatter);
 	~handler();
 
 	inline void set_level(level level) { m_level = level; }

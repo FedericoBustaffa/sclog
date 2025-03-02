@@ -16,9 +16,11 @@ public:
 
 	std::string format(const std::string& content, level level);
 
-private:
+protected:
 	std::string m_format;
 };
+
+extern formatter default_formatter;
 
 } // namespace sclog
 

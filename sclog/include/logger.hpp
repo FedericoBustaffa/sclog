@@ -26,7 +26,7 @@ public:
 
 	inline const level& get_level() const { return m_level; }
 
-	void add_handler(std::ostream* stream, level level = level::warning);
+	void add_handler(const handler& handler);
 
 	std::vector<handler>& get_handlers();
 

@@ -1,3 +1,3 @@
 # Simple Concurrent Logging
 
-A simple asynchronous logger
+Simple asynchronous thread safe logger.

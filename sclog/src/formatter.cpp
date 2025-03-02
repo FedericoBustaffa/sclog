@@ -8,7 +8,10 @@
 namespace sclog
 {
 
+// --- Empty Formatter ---
 formatter::formatter(const std::string& format) : m_format(format) {}
+
+formatter::~formatter() {}
 
 std::string formatter::format(const std::string& content, level level)
 {
@@ -17,10 +20,9 @@ std::string formatter::format(const std::string& content, level level)
 	std::stringstream ss;
 	ss << std::put_time(std::localtime(&now_time), "%Y-%m-%d %H:%M:%S");
 
-	return fmt::format(m_format, ss.str(), level_color(level), level_to_string(level), content,
-					   RESET);
+	return fmt::format(m_format, ss.str(), level_to_string(level), content);
 }
 
-formatter::~formatter() {}
+formatter default_formatter("[{}] - [{}]: {}");
 
 } // namespace sclog

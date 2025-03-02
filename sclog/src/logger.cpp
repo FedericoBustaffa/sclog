@@ -25,10 +25,7 @@ static void handle(level* m_level, queue* messages, std::vector<handler>* handle
 
 logger::logger(level level) : m_level(level), m_logger(handle, &m_level, &m_messages, &m_handlers)
 {
-	handler stdout_handler(&std::cout, level);
-	formatter formatter("[{}] - {}[{}]: {}{}");
-	stdout_handler.set_formatter(formatter);
-	m_handlers.push_back(stdout_handler);
+	m_handlers.emplace_back(&std::cout, level, default_formatter);
 }
 
 logger::~logger()
@@ -39,10 +36,7 @@ logger::~logger()
 
 void logger::set_level(level level) { m_level = level; }
 
-void logger::add_handler(std::ostream* stream, level level)
-{
-	m_handlers.emplace_back(stream, level);
-}
+void logger::add_handler(const handler& handler) { m_handlers.push_back(handler); }
 
 std::vector<handler>& logger::get_handlers() { return m_handlers; }
 

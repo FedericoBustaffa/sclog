@@ -7,8 +7,10 @@
 namespace sclog
 {
 
-handler::handler(std::ostream* stream, level level)
-	: m_stream(stream), m_level(level), m_formatter() {};
+handler::handler(std::ostream* stream, level level, const formatter& formatter = default_formatter)
+	: m_stream(stream), m_level(level), m_formatter(formatter)
+{
+}
 
 void handler::set_formatter(const formatter& formatter) { m_formatter = formatter; }
 
