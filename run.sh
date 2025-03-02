@@ -7,7 +7,10 @@ else
 	bt=$1
 fi
 
-echo "Build project ..."
+if [[ ! -d "./build/" ]]; then
+    mkdir "build"
+fi
+
 cd ./build/
 cmake .. -DCMAKE_BUILD_TYPE=$bt
 
