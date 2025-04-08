@@ -2,9 +2,9 @@
 
 
 if [ $# -eq 0 ]; then
-	bt=Debug
+    bt=Debug
 else
-	bt=$1
+    bt=$1
 fi
 
 if [[ ! -d "./build/" ]]; then
@@ -15,13 +15,9 @@ cd ./build/
 cmake .. -DCMAKE_BUILD_TYPE=$bt
 
 if make; then
-	cd ..
-	if [[ "$bt" == "Debug" ]]; then
-		valgrind -s ./build/test/test
-	else
-		./build/test/test
-	fi
+    cd ..
+    ./build/test/test
 else
-	echo "compilation failed"
-	exit 1
+    echo "compilation failed"
+    exit 1
 fi

@@ -9,7 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(CMAKE_CXX_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=thread")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 file(GLOB_RECURSE HEADERS "include/*.hpp")
