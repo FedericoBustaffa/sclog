@@ -1,43 +1,45 @@
-#include "level.hpp"
+#include "Level.hpp"
 
 #include <fmt/color.h>
 
 namespace sclog
 {
 
-std::string level_to_string(level level)
+std::string levelTOString(Level level)
 {
     switch (level)
     {
-    case level::trace:
+    case Level::Trace:
         return "TRACE";
-    case level::debug:
+    case Level::Debug:
         return "DEBUG";
-    case level::info:
+    case Level::Info:
         return "INFO";
-    case level::warning:
+    case Level::Warning:
         return "WARNING";
-    case level::error:
+    case Level::Error:
         return "ERROR";
     default:
         return "UNKNOWN";
     }
 }
 
-fmt::color level_color(level level)
+fmt::color levelToColor(Level level)
 {
     switch (level)
     {
-    case level::trace:
+    case Level::Trace:
         return fmt::color::white;
-    case level::debug:
+    case Level::Debug:
         return fmt::color::cyan;
-    case level::info:
+    case Level::Info:
         return fmt::color::green;
-    case level::warning:
+    case Level::Warning:
         return fmt::color::yellow;
-    case level::error:
+    case Level::Error:
         return fmt::color::red;
+    default:
+        return fmt::color::white;
     }
 }
 

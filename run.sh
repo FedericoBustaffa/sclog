@@ -7,14 +7,7 @@ else
     bt=$1
 fi
 
-if [[ ! -d "./build/" ]]; then
-    mkdir "build"
-fi
-
-cd ./build/
-cmake .. -DCMAKE_BUILD_TYPE=$bt
-make
-cd ..
+./run.sh $bt
 
 if [ "$bt" == "Debug" ]; then
     valgrind --tool=helgrind ./build/test/test

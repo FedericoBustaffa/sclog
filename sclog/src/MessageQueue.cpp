@@ -1,0 +1,40 @@
+#include "MessageQueue.hpp"
+
+namespace sclog
+{
+
+MessageQueue::MessageQueue() : m_Closed(false) {}
+
+void MessageQueue::push(std::string&& message)
+{
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    m_Queue.push(message);
+    m_Empty.notify_one();
+}
+
+std::optional<std::string> MessageQueue::pop()
+{
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    while (m_Queue.empty() && !m_Closed.load())
+        m_Empty.wait(lock);
+
+    if (m_Queue.empty() && m_Closed.load())
+        return std::nullopt;
+
+    std::string message = std::move(m_Queue.front());
+    m_Queue.pop();
+
+    m_Full.notify_one();
+
+    return message;
+}
+
+void MessageQueue::close() { m_Closed.store(true); }
+
+MessageQueue::~MessageQueue()
+{
+    if (!m_Closed.load())
+        this->close();
+}
+
+} // namespace sclog
