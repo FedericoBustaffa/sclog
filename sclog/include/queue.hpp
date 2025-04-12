@@ -1,12 +1,10 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
+#include <condition_variable>
+#include <mutex>
 #include <queue>
 #include <string>
-#include <mutex>
-#include <condition_variable>
-
-#include "level.hpp"
 
 namespace sclog
 {
@@ -14,21 +12,22 @@ namespace sclog
 class queue
 {
 public:
-	queue();
-	~queue();
-	struct message
-	{
-		std::string content;
-		level lvl;
-	};
+    queue(size_t capacity = 0);
 
-	void push(const message& msg);
-	queue::message pop();
+    inline size_t capacity() const { return m_capacity.load(); }
+
+    void push(const std::string& msg);
+
+    std::string pop();
+
+    ~queue();
 
 private:
-	std::mutex m_mutex;
-	std::condition_variable m_condition;
-	std::queue<message> m_buffer;
+    std::atomic<size_t> m_capacity;
+    std::queue<std::string> m_buffer;
+
+    std::mutex m_mutex;
+    std::condition_variable m_condition;
 };
 
 } // namespace sclog

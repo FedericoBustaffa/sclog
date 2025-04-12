@@ -13,11 +13,11 @@ fi
 
 cd ./build/
 cmake .. -DCMAKE_BUILD_TYPE=$bt
+make
+cd ..
 
-if make; then
-    cd ..
-    ./build/test/test
+if [ "$bt" == "Debug" ]; then
+    valgrind --tool=helgrind ./build/test/test
 else
-    echo "compilation failed"
-    exit 1
+    ./build/test/test
 fi
