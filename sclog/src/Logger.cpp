@@ -5,25 +5,28 @@
 namespace sclog
 {
 
-static void async_log(MessageQueue* queue)
+Logger::Logger(Level level) : m_Level(level)
 {
-    std::optional<std::string> message;
-    while (true)
-    {
-        message = queue->pop();
-        if (!message.has_value())
-            return;
+    auto fetch = [this]() {
+        std::optional<std::string> message;
+        while (true)
+        {
+            message = m_Queue.pop();
+            if (!message.has_value())
+                return;
 
-        fmt::print("{}\n", message.value());
-    }
+            fmt::print("{}\n", message.value());
+        }
+    };
+
+    m_Thread = new std::thread(fetch);
 }
-
-Logger::Logger(Level level) : m_Level(level), m_Thread(async_log, &m_Queue) {}
 
 Logger::~Logger()
 {
     m_Queue.close();
-    m_Thread.join();
+    m_Thread->join();
+    delete m_Thread;
 }
 
 } // namespace sclog
