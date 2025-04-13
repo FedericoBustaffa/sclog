@@ -33,7 +33,7 @@ public:
         std::string msg_fmt =
             fmt::format(fmt::runtime(format), std::forward<Args>(args)...);
 
-        std::time_t timestamp = std::time(nullptr);
+        auto timestamp = std::chrono::system_clock::now();
         std::string time_fmt =
             fmt::format("{:%Y-%m-%d %H:%M:%S}", fmt::gmtime(timestamp));
 
@@ -83,7 +83,7 @@ public:
 private:
     Level m_Level;
     MessageQueue m_Queue;
-    std::thread m_Thread;
+    std::thread* m_Thread;
 };
 
 } // namespace sclog
