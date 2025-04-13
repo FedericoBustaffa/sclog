@@ -23,9 +23,8 @@ public:
 
     inline const Level& getLevel() const { return m_Level; }
 
-    // --- Logging functions ---
     template <typename... Args>
-    void log(Level level, std::string&& format, Args&&... args)
+    void log(Level level, const std::string& format, Args&&... args)
     {
         if (level < m_Level)
             return;
@@ -34,8 +33,9 @@ public:
             fmt::format(fmt::runtime(format), std::forward<Args>(args)...);
 
         auto timestamp = std::chrono::system_clock::now();
+        std::time_t ts = std::chrono::system_clock::to_time_t(timestamp);
         std::string time_fmt =
-            fmt::format("{:%Y-%m-%d %H:%M:%S}", fmt::gmtime(timestamp));
+            fmt::format("{:%Y-%m-%d %H:%M:%S}", fmt::localtime(ts));
 
         std::string message =
             fmt::format("{} - [{}]: {}", time_fmt, level, msg_fmt);
@@ -44,38 +44,33 @@ public:
     }
 
     template <typename... Args>
-    void trace(std::string&& format, Args&&... args)
+    void trace(const std::string& format, Args&&... args)
     {
-        log(Level::Trace, std::forward<std::string>(format),
-            std::forward<Args>(args)...);
+        log(Level::Trace, format, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void debug(std::string&& format, Args&&... args)
+    void debug(const std::string& format, Args&&... args)
     {
-        log(Level::Debug, std::forward<std::string>(format),
-            std::forward<Args>(args)...);
+        log(Level::Debug, format, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void info(std::string&& format, Args&&... args)
+    void info(const std::string& format, Args&&... args)
     {
-        log(Level::Info, std::forward<std::string>(format),
-            std::forward<Args>(args)...);
+        log(Level::Info, format, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void warning(std::string&& format, Args&&... args)
+    void warning(const std::string& format, Args&&... args)
     {
-        log(Level::Warning, std::forward<std::string>(format),
-            std::forward<Args>(args)...);
+        log(Level::Warning, format, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void error(std::string&& format, Args&&... args)
+    void error(const std::string& format, Args&&... args)
     {
-        log(Level::Error, std::forward<std::string>(format),
-            std::forward<Args>(args)...);
+        log(Level::Error, format, std::forward<Args>(args)...);
     }
 
     ~Logger();
