@@ -5,7 +5,7 @@
 namespace sclog
 {
 
-static void async_log(Level* level, MessageQueue* queue)
+static void async_log(MessageQueue* queue)
 {
     std::optional<std::string> message;
     while (true)
@@ -18,10 +18,7 @@ static void async_log(Level* level, MessageQueue* queue)
     }
 }
 
-Logger::Logger(Level level)
-    : m_Level(level), m_Thread(async_log, &m_Level, &m_Queue)
-{
-}
+Logger::Logger(Level level) : m_Level(level), m_Thread(async_log, &m_Queue) {}
 
 Logger::~Logger()
 {
