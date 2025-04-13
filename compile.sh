@@ -13,5 +13,5 @@ fi
 
 cd ./build/
 cmake .. -DCMAKE_BUILD_TYPE=$bt
-make
+make -j
 cd ..

@@ -29,7 +29,12 @@ std::optional<std::string> MessageQueue::pop()
     return message;
 }
 
-void MessageQueue::close() { m_Closed.store(true); }
+void MessageQueue::close()
+{
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    m_Closed.store(true);
+    m_Empty.notify_all();
+}
 
 MessageQueue::~MessageQueue()
 {

@@ -5,25 +5,6 @@
 namespace sclog
 {
 
-std::string levelTOString(Level level)
-{
-    switch (level)
-    {
-    case Level::Trace:
-        return "TRACE";
-    case Level::Debug:
-        return "DEBUG";
-    case Level::Info:
-        return "INFO";
-    case Level::Warning:
-        return "WARNING";
-    case Level::Error:
-        return "ERROR";
-    default:
-        return "UNKNOWN";
-    }
-}
-
 fmt::color levelToColor(Level level)
 {
     switch (level)

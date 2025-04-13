@@ -1,8 +1,6 @@
 #ifndef LEVEL_HPP
 #define LEVEL_HPP
 
-#include <string>
-
 #include <fmt/color.h>
 #include <fmt/format.h>
 
@@ -15,10 +13,9 @@ enum class Level
     Debug = 20,
     Info = 30,
     Warning = 40,
-    Error = 50
+    Error = 50,
+    Disabled = 100,
 };
-
-std::string levelToString(Level level);
 
 fmt::color levelToColor(Level level);
 
@@ -46,6 +43,9 @@ struct fmt::formatter<sclog::Level> : public fmt::formatter<std::string_view>
             break;
         case sclog::Level::Error:
             name = "ERROR";
+            break;
+        case sclog::Level::Disabled:
+            name = "DISABLED";
             break;
         default:
             name = "UNKNOWN";

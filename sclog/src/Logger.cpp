@@ -1,9 +1,11 @@
 #include "Logger.hpp"
 
+#include <fmt/core.h>
+
 namespace sclog
 {
 
-static void handle(Level* level, MessageQueue* queue)
+static void async_log(Level* level, MessageQueue* queue)
 {
     std::optional<std::string> message;
     while (true)
@@ -17,7 +19,7 @@ static void handle(Level* level, MessageQueue* queue)
 }
 
 Logger::Logger(Level level)
-    : m_Level(level), m_Thread(handle, &m_Level, &m_Queue)
+    : m_Level(level), m_Thread(async_log, &m_Level, &m_Queue)
 {
 }
 
@@ -26,7 +28,5 @@ Logger::~Logger()
     m_Queue.close();
     m_Thread.join();
 }
-
-void Logger::setLevel(Level level) { m_Level = level; }
 
 } // namespace sclog

@@ -12,11 +12,12 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
+# set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=thread")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 file(GLOB_RECURSE HEADERS "include/*.hpp")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(test ${HEADERS} ${SOURCES})
-target_include_directories(test PRIVATE "include/" "../sclog/include/")
-target_link_libraries(test PRIVATE sclog fmt)
+target_include_directories(test PUBLIC "include/" "../sclog/include/")
+target_link_libraries(test PUBLIC sclog fmt)
