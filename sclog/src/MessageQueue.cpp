@@ -15,10 +15,10 @@ void MessageQueue::push(std::string&& message)
 std::optional<std::string> MessageQueue::pop()
 {
     std::unique_lock<std::mutex> lock(m_Mutex);
-    while (m_Queue.empty() && !m_Closed.load())
+    while (!m_Closed.load() && m_Queue.empty())
         m_Empty.wait(lock);
 
-    if (m_Queue.empty() && m_Closed.load())
+    if (m_Closed.load() && m_Queue.empty())
         return std::nullopt;
 
     std::string message = std::move(m_Queue.front());
@@ -33,7 +33,7 @@ void MessageQueue::close()
 {
     std::unique_lock<std::mutex> lock(m_Mutex);
     m_Closed.store(true);
-    m_Empty.notify_all();
+    m_Empty.notify_one();
 }
 
 MessageQueue::~MessageQueue()
