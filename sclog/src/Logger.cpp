@@ -19,13 +19,7 @@ Logger::Logger(Level level) : m_Level(level)
                 return;
 
             for (Handler& h : m_Handlers)
-            {
-                auto& stream = h.stream();
-                if (&stream == &std::cout)
-                    fmt::print("{}", message.value());
-                else
-                    fmt::print(stream, "{}", message.value());
-            }
+                fmt::print(h.stream(), "{}", message.value());
         }
     };
 

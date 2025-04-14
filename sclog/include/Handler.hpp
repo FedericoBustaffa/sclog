@@ -13,7 +13,7 @@ public:
 
     Handler(const std::string& filepath);
 
-    std::ostream& stream() { return *m_Stream; }
+    inline std::ostream& stream() { return *m_Stream; }
 
     ~Handler();
 
