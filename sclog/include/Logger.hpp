@@ -8,6 +8,7 @@
 #include <fmt/format.h>
 #include <fmt/std.h>
 
+#include "Handler.hpp"
 #include "Level.hpp"
 #include "MessageQueue.hpp"
 
@@ -22,6 +23,8 @@ public:
     inline void setLevel(Level level) { m_Level = level; }
 
     inline const Level& getLevel() const { return m_Level; }
+
+    void addFileHandler(const std::string& filepath);
 
     template <typename... Args>
     void log(Level level, const std::string& format, Args&&... args)
@@ -79,6 +82,8 @@ private:
     Level m_Level;
     MessageQueue m_Queue;
     std::thread* m_Thread;
+
+    std::vector<Handler> m_Handlers;
 };
 
 } // namespace sclog

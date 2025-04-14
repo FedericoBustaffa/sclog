@@ -7,6 +7,9 @@ namespace sclog
 
 Logger::Logger(Level level) : m_Level(level)
 {
+    m_Handlers.emplace_back(&std::cout);
+    // m_Handlers.push_back(&std::cerr);
+
     auto fetch = [this]() {
         std::optional<std::string> message;
         while (true)
@@ -15,11 +18,23 @@ Logger::Logger(Level level) : m_Level(level)
             if (!message.has_value())
                 return;
 
-            fmt::print("{}\n", message.value());
+            for (Handler& h : m_Handlers)
+            {
+                auto& stream = h.stream();
+                if (&stream == &std::cout)
+                    fmt::print("{}", message.value());
+                else
+                    fmt::print(stream, "{}", message.value());
+            }
         }
     };
 
     m_Thread = new std::thread(fetch);
+}
+
+void Logger::addFileHandler(const std::string& filepath)
+{
+    m_Handlers.emplace_back(filepath);
 }
 
 Logger::~Logger()

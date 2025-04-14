@@ -13,27 +13,28 @@ void async_work(uint32_t id, sc::Logger* logger)
     std::discrete_distribution<int32_t> dist(100, 1000);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(dist(eng)));
-    logger->trace("trace message from thread: {}", id);
+    logger->trace("trace message from thread: {}\n", id);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(dist(eng)));
-    logger->debug("debug message from thread: {}", id);
+    logger->debug("debug message from thread: {}\n", id);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(dist(eng)));
-    logger->info("info message from thread: {}", id);
+    logger->info("info message from thread: {}\n", id);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(dist(eng)));
-    logger->warning("warning message from thread: {}", id);
+    logger->warning("warning message from thread: {}\n", id);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(dist(eng)));
-    logger->error("error message from thread: {}", id);
+    logger->error("error message from thread: {}\n", id);
 }
 
 int main(int argc, const char** argv)
 {
     sc::Logger logger(sc::Level::Trace);
+    logger.addFileHandler("history.log");
 
     std::vector<std::thread> workers;
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 12; i++)
         workers.emplace_back(async_work, i, &logger);
 
     for (auto& w : workers)
