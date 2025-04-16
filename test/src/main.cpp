@@ -6,7 +6,7 @@
 
 namespace sc = sclog;
 
-void async_work(uint32_t id, sc::Logger* logger)
+void async_logging(uint32_t id, sc::Logger* logger)
 {
     std::random_device rd;
     std::default_random_engine eng(rd());
@@ -31,11 +31,11 @@ void async_work(uint32_t id, sc::Logger* logger)
 int main(int argc, const char** argv)
 {
     sc::Logger logger(sc::Level::Trace);
-    logger.addFileHandler("history.log");
+    logger.addHandler("history.log", "w", sc::Level::Trace);
 
     std::vector<std::thread> workers;
-    for (int i = 0; i < 12; i++)
-        workers.emplace_back(async_work, i, &logger);
+    for (int i = 0; i < 1; i++)
+        workers.emplace_back(async_logging, i, &logger);
 
     for (auto& w : workers)
         w.join();

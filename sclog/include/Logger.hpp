@@ -24,7 +24,13 @@ public:
 
     inline const Level& getLevel() const { return m_Level; }
 
-    void addFileHandler(const std::string& filepath);
+    void addHandler(const std::string& filepath, const char* mode = "w",
+                    Level level = Level::Trace);
+
+    inline const std::vector<Handler>& getHandlers() const
+    {
+        return m_Handlers;
+    }
 
     template <typename... Args>
     void log(Level level, const std::string& format, Args&&... args)
@@ -81,7 +87,7 @@ public:
 private:
     Level m_Level;
     MessageQueue m_Queue;
-    std::thread* m_Thread;
+    std::thread m_Thread;
 
     std::vector<Handler> m_Handlers;
 };

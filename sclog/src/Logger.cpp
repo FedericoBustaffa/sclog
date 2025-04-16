@@ -7,8 +7,10 @@ namespace sclog
 
 Logger::Logger(Level level) : m_Level(level)
 {
-    m_Handlers.emplace_back(&std::cout);
-    // m_Handlers.push_back(&std::cerr);
+    m_Handlers.emplace_back(stdout);
+    m_Handlers[0].setLevel(m_Level);
+
+    m_Handlers.emplace_back(stderr, Level::Error);
 
     auto fetch = [this]() {
         std::optional<std::string> message;
@@ -18,24 +20,27 @@ Logger::Logger(Level level) : m_Level(level)
             if (!message.has_value())
                 return;
 
-            for (Handler& h : m_Handlers)
-                fmt::print(h.stream(), "{}", message.value());
+            for (Handler& handler : m_Handlers)
+            {
+                if (handler.isEnabled() && handler.getLevel() >= m_Level)
+                    fmt::print(handler.stream(), "{}", message.value());
+            }
         }
     };
 
-    m_Thread = new std::thread(fetch);
+    m_Thread = std::thread(fetch);
 }
 
-void Logger::addFileHandler(const std::string& filepath)
+void Logger::addHandler(const std::string& filepath, const char* mode,
+                        Level level)
 {
-    m_Handlers.emplace_back(filepath);
+    m_Handlers.emplace_back(filepath, mode, level);
 }
 
 Logger::~Logger()
 {
     m_Queue.close();
-    m_Thread->join();
-    delete m_Thread;
+    m_Thread.join();
 }
 
 } // namespace sclog
