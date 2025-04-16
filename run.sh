@@ -9,10 +9,8 @@ fi
 
 ./compile.sh $bt
 
-# ./build/test/test # run with -fsanitize=thread
-
 if [ "$bt" == "Debug" ]; then
-    valgrind --tool=helgrind -s ./build/test/test
+    valgrind --tool=helgrind -s ./build/test/test $2
 else
-    ./build/test/test
+    ./build/test/test $2
 fi

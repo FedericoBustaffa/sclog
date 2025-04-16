@@ -30,11 +30,15 @@ void async_logging(uint32_t id, sc::Logger* logger)
 
 int main(int argc, const char** argv)
 {
+    int n = 32;
+    if (argc == 2)
+        n = std::atoi(argv[1]);
+
     sc::Logger logger(sc::Level::Debug);
-    logger.addHandler("history.log", "w", sc::Level::Trace);
+    logger.addHandler("history.log", "w", sc::Level::Warning);
 
     std::vector<std::thread> workers;
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < n; i++)
         workers.emplace_back(async_logging, i, &logger);
 
     for (auto& w : workers)
