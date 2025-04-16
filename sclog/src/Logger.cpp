@@ -7,10 +7,7 @@ namespace sclog
 
 Logger::Logger(Level level) : m_Level(level)
 {
-    m_Handlers.emplace_back(stdout);
-    m_Handlers[0].setLevel(m_Level);
-
-    m_Handlers.emplace_back(stderr, Level::Error);
+    m_Handlers.emplace_back(stdout, Level::Trace);
 
     auto fetch = [this]() {
         std::optional<std::pair<std::string, Level>> message;
