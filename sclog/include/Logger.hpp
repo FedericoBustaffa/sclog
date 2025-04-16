@@ -38,6 +38,7 @@ public:
         if (level < m_Level)
             return;
 
+        // --- Should be handled by some formatter ---
         std::string msg_fmt =
             fmt::format(fmt::runtime(format), std::forward<Args>(args)...);
 
@@ -48,8 +49,9 @@ public:
 
         std::string message =
             fmt::format("{} - [{}]: {}", time_fmt, level, msg_fmt);
+        // --- Should be handled by some formatter ---
 
-        m_Queue.push(std::move(message));
+        m_Queue.push(std::move(message), level);
     }
 
     template <typename... Args>

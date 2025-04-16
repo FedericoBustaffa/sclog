@@ -30,7 +30,7 @@ void async_logging(uint32_t id, sc::Logger* logger)
 
 int main(int argc, const char** argv)
 {
-    sc::Logger logger(sc::Level::Trace);
+    sc::Logger logger(sc::Level::Debug);
     logger.addHandler("history.log", "w", sc::Level::Trace);
 
     std::vector<std::thread> workers;

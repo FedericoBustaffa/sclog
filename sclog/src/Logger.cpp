@@ -13,7 +13,7 @@ Logger::Logger(Level level) : m_Level(level)
     m_Handlers.emplace_back(stderr, Level::Error);
 
     auto fetch = [this]() {
-        std::optional<std::string> message;
+        std::optional<std::pair<std::string, Level>> message;
         while (true)
         {
             message = m_Queue.pop();
@@ -22,8 +22,9 @@ Logger::Logger(Level level) : m_Level(level)
 
             for (Handler& handler : m_Handlers)
             {
-                if (handler.isEnabled() && handler.getLevel() >= m_Level)
-                    fmt::print(handler.stream(), "{}", message.value());
+                if (handler.isEnabled() &&
+                    message.value().second >= handler.getLevel())
+                    fmt::print(handler.stream(), "{}", message.value().first);
             }
         }
     };

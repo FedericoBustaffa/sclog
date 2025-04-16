@@ -5,14 +5,14 @@ namespace sclog
 
 MessageQueue::MessageQueue() : m_Closed(false) {}
 
-void MessageQueue::push(std::string&& message)
+void MessageQueue::push(std::string&& message, Level level)
 {
     std::unique_lock<std::mutex> lock(m_Mutex);
-    m_Queue.push(message);
+    m_Queue.push({message, level});
     m_Empty.notify_one();
 }
 
-std::optional<std::string> MessageQueue::pop()
+std::optional<std::pair<std::string, Level>> MessageQueue::pop()
 {
     std::unique_lock<std::mutex> lock(m_Mutex);
     while (!m_Closed.load() && m_Queue.empty())
@@ -21,7 +21,7 @@ std::optional<std::string> MessageQueue::pop()
     if (m_Closed.load() && m_Queue.empty())
         return std::nullopt;
 
-    std::string message = std::move(m_Queue.front());
+    std::pair<std::string, Level> message = std::move(m_Queue.front());
     m_Queue.pop();
 
     m_Full.notify_one();
